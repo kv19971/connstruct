@@ -3,25 +3,26 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-var state;
-var siteURLs;
-var buttonTexts;
+var siteURLs = ['time', 'location', 'budget', 'importcad', 'preferences', 'show', 'summary'];
+var buttonTexts = ['Proceed', 'Set location', 'Set budget', 'Import model', 'Set preferences', 'Proceed', 'Finish'];
 var buttonText;
 
 Template.mainLayout.viewmodel({
     state : 0,
-    siteURLs : ['time', 'myLocation', 'budget', 'importcad', 'showmodel', 'showmaterials'],
-    buttonTexts : ['Set location', 'Set budget', 'Import model', 'View model', 'Show materials', 'Finish'],
-    buttonText : buttonTexts[state],
+    buttonText : null,
+    onCreated() {
+      this.buttonText(buttonTexts[this.state()])
+    },
     nextPage : function(e){
-        buttonText = buttonTexts[state];
-        state = state + 1;
-        if(state == 6){
+        this.state(this.state() + 1);
+        console.log(this.state())
+        this.buttonText(buttonTexts[this.state()]);
+        if(this.state() == buttonTexts.length){
             alert("Finished");
         }
         else{
-            Console.log("Routing!!");
-            FlowRouter.go("/" + siteURLs[state]);
+            console.log("Routing!!");
+            FlowRouter.go("/" + siteURLs[this.state()]);
         }
     }
 })

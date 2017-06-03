@@ -23,13 +23,18 @@ FlowRouter.route('/importcad', {
     BlazeLayout.render("mainLayout", {content: "importcad"});
   }
 });
-FlowRouter.route('/showmodel', {
+FlowRouter.route('/preferences', {
   action: function() {
-    BlazeLayout.render("mainLayout", {content: "showmodel"});
+    BlazeLayout.render("mainLayout", {content: "preferences"});
   }
 });
-FlowRouter.route('/showmaterials/:m', {
+FlowRouter.route('/show/', {
     action: function(params) {
-        BlazeLayout.render("mainLayout", {content: "showmaterials", params: FlowRouter.getParam("m")});
+        BlazeLayout.render("mainLayout", {content: "show"});
+    }
+});
+FlowRouter.route('/summary/', {
+    action: function(params) {
+        BlazeLayout.render("mainLayout", {content: "summary"});
     }
 });
