@@ -3,13 +3,17 @@
  */
 import three from "three";
 import OBJLoader from 'three-obj-loader';
+var OrbitControls = require('three-orbit-controls')(three);
 OBJLoader(three)
 import './importcad.html';
-
+const width = 900;
+const height = 550;
+const pxr = width/height;
 //obj = require('./obj/building.obj');
-
+var curx = 0;
 Template.importcad.viewmodel({
     domElement: null,
+    signal: 'mouse',
     onCreated() {
         console.log(document);
         
@@ -26,37 +30,46 @@ Template.importcad.viewmodel({
 					texture.needsUpdate = true;
 				} );
 
-        var camera = new three.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000 );
-        camera.position.z = 10;
+        var camera = new three.PerspectiveCamera(45, width / height, 1, 2000 );
+        camera.position.z = 15;
         
         var scene = new three.Scene();
 
-        var ambient = new three.AmbientLight( 0x101030 );
+        var ambient = new three.AmbientLight( 0xdddddd );
 				scene.add( ambient );
-        var directionalLight = new three.DirectionalLight( 0xffeedd );
-				directionalLight.position.set( 0, 0, 1 );
-				scene.add( directionalLight );
+        var pointLight = new three.PointLight( 0xffffff, 1 );
+        scene.add(pointLight);
+        
 
         var manager = new three.LoadingManager();
         var loaders = new three.OBJLoader(manager);
         loaders.load("building.obj", function ( object ) {
-					
+                object.position.x = 5;
                     object.position.y = 0;
 					scene.add( object );
 				});
         var renderer = new three.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
+				renderer.setSize( width, height );
+controls = new OrbitControls( camera, renderer.domElement );
+				controls.addEventListener( 'change', render ); // remove when using animation loop
+				// enable animation loop when using damping or autorotation
+				//controls.enableDamping = true;
+				//controls.dampingFactor = 0.25;
+				controls.enableZoom = false;
         document.getElementById("model_cad").appendChild(renderer.domElement);
-
-        function render() {
-				// camera.position.x += ( 500 - camera.position.x ) * .05;
-				// camera.position.y += ( - 1000 - camera.position.y ) * .05;
-				// camera.lookAt( scene.position );
-                requestAnimationFrame(render);
+renderer.physicallyBasedShading = true;
+animate();
+      function render() {
+        
+				camera.lookAt( scene.position );
+               // requestAnimationFrame(render);
 				renderer.render( scene, camera );
 			}
-        render();
+      function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
+      
     }
-})
+});
