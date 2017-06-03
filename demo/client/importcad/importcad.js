@@ -10,7 +10,7 @@ const width = 900;
 const height = 550;
 const pxr = width/height;
 //obj = require('./obj/building.obj');
-var curx = 0;
+var angle = 0;
 Template.importcad.viewmodel({
     domElement: null,
     signal: 'mouse',
@@ -60,8 +60,13 @@ controls = new OrbitControls( camera, renderer.domElement );
         document.getElementById("model_cad").appendChild(renderer.domElement);
 renderer.physicallyBasedShading = true;
 animate();
+      setInterval(function(){
+        angle = (angle + 0.05) % 360; 
+      }, 50)
       function render() {
-        
+        let radius = 15;
+        camera.position.x = radius * Math.cos( angle );  
+        camera.position.z = radius * Math.sin( angle );
 				camera.lookAt( scene.position );
                // requestAnimationFrame(render);
 				renderer.render( scene, camera );
