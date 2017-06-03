@@ -2,6 +2,15 @@
   <library name="meteor-packages-auto-import-npm" type="javaScript">
     <properties>
       <sourceFilesUrls>
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/js/ion.rangeSlider.min.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/normalize.css" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/js/ion.rangeSlider.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinNice.css" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinFlat.css" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinModern.css" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.css" />
+        <item url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinSimple.css" />
         <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/npm/node_modules/es5-shim/es5-sham.min.js" />
         <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/npm/node_modules/es5-shim/es5-shim.js" />
         <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/npm/node_modules/es5-shim/es5-sham.js" />
@@ -5056,6 +5065,15 @@
       </sourceFilesUrls>
     </properties>
     <CLASSES>
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/js/ion.rangeSlider.min.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/normalize.css" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/js/ion.rangeSlider.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinNice.css" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinFlat.css" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinModern.css" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.css" />
+      <root url="file://$USER_HOME$/.meteor/packages/postrednik_meteor-rangeslider/0.1.0/npm/node_modules/ion-rangeslider/css/ion.rangeSlider.skinSimple.css" />
       <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/npm/node_modules/es5-shim/es5-sham.min.js" />
       <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/npm/node_modules/es5-shim/es5-shim.js" />
       <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/npm/node_modules/es5-shim/es5-sham.js" />
