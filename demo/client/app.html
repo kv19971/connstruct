@@ -1,7 +1,7 @@
 <template name="app">
     <br/>
     <div class="ui attached container">
-        <div class="ui fluid stackable steps top attached">
+        <div class="ui fluid stackable steps top attached" id="ui-fluid-stackable">
             <div class="active step">
                 <i class="truck icon"></i>
                 <div class="content">
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="ui attached segment" style="height: 600px;">
+        <div class="ui attached segment" id = "mainuishit" style="height: 600px;">
             {{> Template.dynamic template=content}}
         </div>
 
