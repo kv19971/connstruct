@@ -1,6 +1,10 @@
-FlowRouter.route('/lists/:_id', {
-  name: 'Lists.show',
-  action(params, queryParams) {
-    console.log("Looking at a list?");
+FlowRouter.route('/', {
+  action: function() {
+    BlazeLayout.render("mainLayout", {content: "home"});
+  }
+});
+FlowRouter.route('/fuckall', {
+  action: function() {
+    BlazeLayout.render("mainLayout", {content: "hello"});
   }
 });

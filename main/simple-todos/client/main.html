@@ -8,13 +8,20 @@
   {{> hello}}
   {{> info}}
 </body>
+<template name="mainLayout">
+  <header><h1>Kadira Blog</h1></header>
+  <main>
+    {{>Template.dynamic template=content}}
+  </main>
+  <footer>We love Meteor</footer>
+</template>
 
 <template name="hello">
-  <button>Click Me</button>
+  <button>Ill cuss whenever you fag</button>
   <p>You've pressed the button {{counter}} times.</p>
 </template>
 
-<template name="info">
+<template name="home">
   <h2>Learn Meteor!</h2>
   <ul>
     <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
