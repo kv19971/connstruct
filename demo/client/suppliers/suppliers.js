@@ -8,6 +8,7 @@ Template.suppliers.viewmodel({
     },
     onRendered() {
         var G = new jsnx.Graph();
+
         G.addNodesFrom([
                 [1, {color: 'red', name:"Supplier A"}],
                 [2, {color: 'green', name:"Supplier B"}],
