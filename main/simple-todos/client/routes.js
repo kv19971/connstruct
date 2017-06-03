@@ -21,7 +21,7 @@ FlowRouter.route('/budget', {
 FlowRouter.route('/importcad', {
   action: function() {
     BlazeLayout.render("mainLayout", {content: "importcad"});
-  }
+  }    
 });
 FlowRouter.route('/preferences', {
   action: function() {

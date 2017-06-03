@@ -9,6 +9,11 @@ FlowRouter.route("/schedule", {
         BlazeLayout.render("app", {content: "schedule"});
     }
 })
+FlowRouter.route("/importcad", {
+    action: function() {
+        BlazeLayout.render("app", {content: "importcad"});
+    }
+})
 
 FlowRouter.route('/suppliers', {
     action: function() {
