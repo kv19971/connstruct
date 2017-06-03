@@ -3,10 +3,20 @@ FlowRouter.route('/', {
     BlazeLayout.render("mainLayout", {content: "home"});
   }
 });
-FlowRouter.route('/info', {
-  action: function() {
-    BlazeLayout.render("mainLayout", {content: "info"});
-  }
+FlowRouter.route('/time', {
+    action: function() {
+        BlazeLayout.render("mainLayout", {content: "time"});
+    }
+});
+FlowRouter.route('/location', {
+    action: function() {
+        BlazeLayout.render("mainLayout", {content: "myLocation"});
+    }
+});
+FlowRouter.route('/budget', {
+    action: function() {
+        BlazeLayout.render("mainLayout", {content: "budget"});
+    }
 });
 FlowRouter.route('/importcad', {
   action: function() {
@@ -19,7 +29,7 @@ FlowRouter.route('/showmodel', {
   }
 });
 FlowRouter.route('/showmaterials/:m', {
-  action: function(params) {
-    BlazeLayout.render("mainLayout", {content: "showmaterials", params: FlowRouter.getParam("m")});
-  }
+    action: function(params) {
+        BlazeLayout.render("mainLayout", {content: "showmaterials", params: FlowRouter.getParam("m")});
+    }
 });
