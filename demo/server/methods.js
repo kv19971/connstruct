@@ -149,8 +149,11 @@ Meteor.methods({
                 };
             }
         }));
-
-        return _.unique(Object.keys(_.groupBy(structures, 'material')));
+        let counts = _.groupBy(structures, 'material');
+        for (let key in counts) {
+            counts[key] = counts[key].length;
+        }
+        return counts;
     },
 
 })
