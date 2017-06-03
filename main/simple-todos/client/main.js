@@ -3,20 +3,26 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
-});
+var siteURLs = ['time', 'location', 'budget', 'importcad', 'preferences', 'show', 'summary'];
+var buttonTexts = ['Proceed', 'Set location', 'Set budget', 'Import model', 'Set preferences', 'Proceed', 'Finish'];
+var buttonText;
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
-});
-
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
-});
+Template.mainLayout.viewmodel({
+    state : 0,
+    buttonText : null,
+    onCreated() {
+      this.buttonText(buttonTexts[this.state()])
+    },
+    nextPage : function(e){
+        this.state(this.state() + 1);
+        console.log(this.state())
+        this.buttonText(buttonTexts[this.state()]);
+        if(this.state() == buttonTexts.length){
+            alert("Finished");
+        }
+        else{
+            console.log("Routing!!");
+            FlowRouter.go("/" + siteURLs[this.state()]);
+        }
+    }
+})
