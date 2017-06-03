@@ -9,3 +9,9 @@ FlowRouter.route("/schedule", {
         BlazeLayout.render("app", {content: "schedule"});
     }
 })
+
+FlowRouter.route('/suppliers', {
+    action: function() {
+        BlazeLayout.render("app", {content: "suppliers"});
+    }
+})
