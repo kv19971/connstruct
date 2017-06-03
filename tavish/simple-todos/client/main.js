@@ -3,20 +3,14 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
-});
-
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
-});
-
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
-});
+Template.hello.onCreated(() => {
+  Meteor.call('materials.get', ['HE450B','IPE270','IPE330'], 0.001, 39.768377, -86.158042, 
+  1, 99999999999999, (err, res) =>
+  {
+    if (err) {
+      alert(err);
+    } else {
+     console.log(res);
+    }
+  })
+})
