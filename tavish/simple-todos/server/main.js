@@ -70,7 +70,6 @@ function getFuture (materialName, minQuality, lat, lng, quantity, b, start, dead
       {
         if(priceObj.time>start && priceObj.time<deadline)
         {
-          console.log(priceObj.price);
           updatedMaterials.push({_id: item._id, updatedPrice: 0.01 * dist + priceObj.price,
           quantity: item.quantity, time: priceObj.time});
         }
