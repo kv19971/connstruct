@@ -30,10 +30,11 @@ function getMaterial (materialName, minQuality, lat, lng, quantity, b){
     {
       var supplyLoc = Suppliers.findOne({_id: item.supplierId}).location;
       var dist = getDistanceFromLatLonInKm(supplyLoc[0],supplyLoc[1],lat,lng);
-      updatedMaterials.push({_id: item._id, updatedPrice: 0.001 * dist + item.price, quantity: item.quantity});
+      updatedMaterials.push({_id: item._id, updatedPrice: 0.001 * dist + item.prices[item.prices.length-1].price,
+         quantity: item.quantity});
     })
     updatedMaterials.sort(function(a, b) {
-    return parseFloat(a.price) - parseFloat(b.price);
+    return parseFloat(a.updatedPrice) - parseFloat(b.updatedPrice);
   });
     var materialsUsed = [];
     for (let i = 0; i < updatedMaterials.length; i++) {
@@ -57,6 +58,49 @@ function getMaterial (materialName, minQuality, lat, lng, quantity, b){
     return materialsUsed;
   }
 
+function getFuture (materialName, minQuality, lat, lng, quantity, b, start, deadline){
+    var q = quantity;
+    var updatedMaterials = [];
+    Materials.find({name : materialName, rating : {$gte : minQuality}})
+    .fetch().forEach(function(item)
+    {
+      var supplyLoc = Suppliers.findOne({_id: item.supplierId}).location;
+      var dist = getDistanceFromLatLonInKm(supplyLoc[0],supplyLoc[1],lat,lng);
+      item.prices.forEach(function(priceObj)
+      {
+        if(priceObj.time>start && priceObj.time<deadline)
+        {
+          console.log(priceObj.price);
+          updatedMaterials.push({_id: item._id, updatedPrice: 0.01 * dist + priceObj.price,
+          quantity: item.quantity, time: priceObj.time});
+        }
+      })
+    })
+    updatedMaterials.sort(function(a, b) {
+    return parseFloat(a.updatedPrice) - parseFloat(b.updatedPrice);
+  });
+    var materialsUsed = [];
+    for (let i = 0; i < updatedMaterials.length; i++) {
+      const item = updatedMaterials[i];
+      if(item.quantity<=q)
+      {
+        b -= item.updatedPrice*item.quantity;
+        if(b<0) return "insufficient budget!";
+        materialsUsed.push(updatedMaterials[i]);
+        q -= item.quantity;
+      } 
+      else
+      {
+        b -= item.updatedPrice*q;
+        if(b<0) return "insufficient budget!";
+        materialsUsed.push(updatedMaterials[i]);
+        q=0;
+        break;
+      }
+    }
+    return materialsUsed;
+  }
+
 Meteor.methods({
     'materials.get'(materials, minQuality, lat, lng, quantity, budget){
       var allMaterialsUsed= [];
@@ -66,7 +110,19 @@ Meteor.methods({
           allMaterialsUsed.push(getMaterial(materials[i], minQuality, lat, lng, quantity, b));
       }
       return allMaterialsUsed;
-    }})
+    },
+    'supplier.get'(supplierId){
+      return Suppliers.findOne({_id: supplierId});
+    },
+    'future.get'(materials, minQuality, lat, lng, quantity, budget, start, deadline){
+      var allMaterialsUsed= [];
+      var b = budget;
+      for(let i=0;i<materials.length;i++)
+      {
+          allMaterialsUsed.push(getFuture(materials[i], minQuality, lat, lng, quantity, b, start, deadline));
+      }
+      return allMaterialsUsed;
+  }})
     
 
 Meteor.startup(() => {
@@ -128,7 +184,9 @@ Meteor.startup(() => {
   var qly = Math.random();
   Materials.insert(
     { name: element.material, 
-      price: steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1],
+      prices: 
+      [{time: Date.now(), price: 
+        steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]}],
       quantity: Math.floor(Math.random() * 100000) + 5000,
       rating: randSupplier.rating*qly, 
       quality: qly,
@@ -141,22 +199,25 @@ Meteor.startup(() => {
   });
 
   // console.log(Materials.find().count() + " materials inserted")
-
+  
+  var count = 0;
   Meteor.setInterval(function ()
   {
-    // if(count != 0){
-    //   console.log(Materials.findOne({_id: matId}).price);    }
+    if(count%1000===0 && count!=0)
+    {
+      Materials.find().forEach(function(item)
+      {
+        var prices = item.price;
+        prices.splice(0,1);
+        Materials.update({_id:item._id},{$set: {price: prices}})
+      })
+    }
     Materials.find().forEach(function(item)
     {
-      /*if(count === 0){
-        matId = item._id;
-        count++;
-        console.log("RECID = " + matId)
-      }*/
       Materials.update({_id: item._id}, 
-      {$set: 
-        {price: c * item.price 
-          + (1-c) * steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]}})
+      {$push: 
+        {prices: {time: Date.now(), price : c * item.prices[item.prices.length-1].price 
+          + (1-c) * steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]}}})
     })
   }, 10000)
 });

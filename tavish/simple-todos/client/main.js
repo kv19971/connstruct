@@ -13,4 +13,13 @@ Template.hello.onCreated(() => {
      console.log(res);
     }
   })
+  Meteor.call('future.get', ['HE450B','IPE160','IPE330'], 0.001, 39.768377, -86.158042, 
+  1, 99999999999999, 1, Date.now(), (err, res) =>
+  {
+    if (err) {
+      alert(err);
+    } else {
+     console.log(res);
+    }
+  })
 })
