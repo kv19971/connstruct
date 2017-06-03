@@ -1,3 +1,4 @@
+Items = new Mongo.Collection('items');
 if (Meteor.isClient) {
 
   Session.setDefault('centerLat', 21.5);
@@ -11,7 +12,7 @@ if (Meteor.isClient) {
     return Session.get('infoWindowShow-' + item._id);
   });
 
-  Template.mymap.helpers({
+  Template.info.helpers({
     centerLat: function() {
       return Session.get('centerLat');
     },
@@ -25,8 +26,8 @@ if (Meteor.isClient) {
       return Items.find({});
     }
   });
-
-  Template.mymap.events({
+   
+  Template.info.events({
     'center_changed .map': function(event) {
       console.log('center changed', event.originalEvent.detail);
     },
@@ -65,4 +66,3 @@ if (Meteor.isClient) {
   });
 
 }
-    
