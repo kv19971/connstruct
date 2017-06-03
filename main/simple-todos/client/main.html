@@ -3,16 +3,22 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUCn4eDg_EV0vn1oFoOzSUS-N_ORPSO9k"></script>
 </head>
 
-<body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> mainLayout }}
-</body>
 <template name="mainLayout">
   <header><h1>Kadira Blog</h1></header>
-  <main>
-    {{>Template.dynamic template=content data=params}}
-  </main>
+    <body>
+    <h1>Welcome to Meteor!</h1>
+    <main>
+        {{>Template.dynamic template=content data=params}}
+    </main>
+
+    <figure {{b "click: nextPage"}}>
+        <div>
+            <span>{{x}}</span>
+            <span>GO</span>
+        </div>
+    </figure>
+    </body>
+
   <footer>We love Meteor</footer>
 </template>
 
