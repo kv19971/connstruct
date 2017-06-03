@@ -25,12 +25,13 @@ Meteor.startup(() => {
   });
 
   lineReader.on('close', () => {
-      const frameSections = rawModel["FRAME SECTIONS"];
+      const frameSections = rawModel["LINE ASSIGNS"];
       const structures = _.compact(_.map(frameSections, data => {
-          if (data.length > 2 && data[2].startsWith("MATERIAL")) {
+          if (data.length > 2 && data[3].startsWith("SECTION")) {
               return {
-                  type: JSON.parse(data[1].trim()),
-                  material: JSON.parse(data[2].replace("MATERIAL ", "").trim())
+                  id: JSON.parse(data[1].trim()),
+                  floor: JSON.parse(data[2].trim()),
+                  material: JSON.parse(data[3].replace("SECTION ", "").trim())
               };
           }
       }));
