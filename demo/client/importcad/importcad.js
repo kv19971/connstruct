@@ -6,9 +6,9 @@ import OBJLoader from 'three-obj-loader';
 var OrbitControls = require('three-orbit-controls')(three);
 OBJLoader(three)
 import './importcad.html';
-const width = 900;
+var width = 900;
 const height = 550;
-const pxr = width/height;
+var pxr = width/height;
 //obj = require('./obj/building.obj');
 var angle = 0;
 Template.importcad.viewmodel({
@@ -21,7 +21,7 @@ Template.importcad.viewmodel({
 
     },
     onRendered(){
-        
+        width =  $("#mainuishit").width() - 30;
         var texture = new three.Texture();
 
         var loader = new three.ImageLoader( manager );
