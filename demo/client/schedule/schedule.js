@@ -27,5 +27,17 @@ Template.schedule.viewmodel({
            clearButton: true,
            minDate: new Date()
        });
+
+       $('#quality-slider').ionRangeSlider({
+           min: 0,
+           max: 100,
+           grid: true
+       });
+
+       $('#budget-slider').ionRangeSlider({
+           min: 10,
+           max: 1000000000,
+           grid: true
+       });
    }
 });
