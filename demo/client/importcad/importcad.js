@@ -14,6 +14,11 @@ var angle = 0;
 Template.importcad.viewmodel({
     domElement: null,
     signal: 'mouse',
+    showCad: "none",
+    onUploaded: function(){
+      this.showCad("block");
+      
+    },
     onCreated() {
         console.log(document);
 
@@ -57,24 +62,23 @@ Template.importcad.viewmodel({
         //controls.dampingFactor = 0.25;
         controls.enableZoom = false;
         document.getElementById("model_cad").appendChild(renderer.domElement);
-        renderer.physicallyBasedShading = true;
-        animate();
-        setInterval(function () {
-            angle = (angle + 0.05) % 360;
-        }, 50)
-        function render() {
-            let radius = 15;
-            camera.position.x = radius * Math.cos(angle);
-            camera.position.z = radius * Math.sin(angle);
-            camera.lookAt(scene.position);
-            // requestAnimationFrame(render);
-            renderer.render(scene, camera);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            render();
-        }
+renderer.physicallyBasedShading = true;
+animate();
+      setInterval(function(){
+        angle = (angle + 0.02) % 360; 
+      }, 50)
+      function render() {
+        let radius = 15;
+        camera.position.x = radius * Math.cos( angle );  
+        camera.position.z = radius * Math.sin( angle );
+				camera.lookAt( scene.position );
+               // requestAnimationFrame(render);
+				renderer.render( scene, camera );
+			}
+      function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
 
     }
 });

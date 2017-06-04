@@ -2,21 +2,21 @@
     <br/>
     <div class="ui attached container">
         <div class="ui fluid stackable steps top attached" id="ui-fluid-stackable">
-            <div class="active step">
+            <div class="{{activeStep -1}} step">
                 <i class="truck icon"></i>
                 <div class="content">
                     <div class="title">Pick a Source</div>
                     <div class="description">Choose where to source your suppliers.</div>
                 </div>
             </div>
-            <div class="disabled step">
+            <div class="{{activeStep 0}} step">
                 <i class="payment icon"></i>
                 <div class="content">
                     <div class="title">Project Details</div>
                     <div class="description">Plot out deadlines for your project.</div>
                 </div>
             </div>
-            <div class="disabled step">
+            <div class="{{activeStep 1}} step">
                 <i class="payment icon"></i>
                 <div class="content">
                     <div class="title">Upload Model</div>
@@ -30,14 +30,14 @@
         </div>
 
         <div class="ui fluid stackable steps bottom attached">
-            <div class="disabled step">
+            <div class="{{activeStep 2}} step">
                 <i class="truck icon"></i>
                 <div class="content">
                     <div class="title">Pick Suppliers</div>
                     <div class="description">Check out suppliers we picked for your project.</div>
                 </div>
             </div>
-            <div class="disabled step">
+            <div class="{{activeStep 3}} step">
                 <i class="payment icon"></i>
                 <div class="content">
                     <div class="title">Forecast Budget</div>

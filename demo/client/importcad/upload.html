@@ -1,0 +1,14 @@
+<template name="uploadForm">
+  {{#with currentUpload}}
+    Uploading <b>{{file.name}}</b>:
+    <div class="progress">
+    <div class="progress-bar" data-transitiongoal="100"></div>
+    </div>
+    <span id="progress">{{progress.get}}%</span>
+  {{else}}
+   <label for="fileInput" class="custom-file-upload">
+    <i class="fa fa-cloud-upload"></i> Upload Design File
+</label>
+<input id="fileInput" type="file"/>
+  {{/with}}
+</template>
