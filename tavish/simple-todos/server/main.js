@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import LineReader from 'readline';
 import fs from 'fs';
+import regression from 'regression';
 
 var c = 0.99;
 
@@ -61,6 +62,24 @@ function getMaterial (materialName, minQuality, lat, lng, quantity, b){
 function getFuture (materialName, minQuality, lat, lng, quantity, b, start, deadline){
     var q = quantity;
     var updatedMaterials = [];
+    ////
+    // Materials.find({name : materialName}).forEach(function(item)
+    // {
+    //     var trainingData= [];
+    //     for(var i = 0; i<50 ; i++)
+    //     {
+    //       var row = [new Date(steelPriceEndPoint.data.
+    //       data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][0]).getTime(),
+    //       steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]];
+    //       trainingData.push(row);
+    //     }
+    //     var result = regression('linearThroughOrigin', trainingData);
+    //     for(var t=start;t<deadline;t+=604800)
+    //     {
+    //       Materials.update({_id: item._id}, {$push: { prices : { time: t , price: result.equation[0]*t}}})
+    //     }
+    // })
+    ////
     Materials.find({name : materialName, rating : {$gte : minQuality}})
     .fetch().forEach(function(item)
     {
@@ -71,7 +90,7 @@ function getFuture (materialName, minQuality, lat, lng, quantity, b, start, dead
         if(priceObj.time>start && priceObj.time<deadline)
         {
           updatedMaterials.push({_id: item._id, updatedPrice: 0.01 * dist + priceObj.price,
-          quantity: item.quantity, time: priceObj.time});
+          quantity: item.quantity, time: priceObj.time, priceHistory: item.prices});
         }
       })
     })
@@ -79,6 +98,7 @@ function getFuture (materialName, minQuality, lat, lng, quantity, b, start, dead
     return parseFloat(a.updatedPrice) - parseFloat(b.updatedPrice);
   });
     var materialsUsed = [];
+    //console.log(updatedMaterials.length)
     for (let i = 0; i < updatedMaterials.length; i++) {
       const item = updatedMaterials[i];
       if(item.quantity<=q)
@@ -97,6 +117,8 @@ function getFuture (materialName, minQuality, lat, lng, quantity, b, start, dead
         break;
       }
     }
+    console.log("mats used!");
+    console.log(materialsUsed[0].priceHistory);
     return materialsUsed;
   }
 
@@ -197,12 +219,31 @@ Meteor.startup(() => {
     })
   });
 
-  // console.log(Materials.find().count() + " materials inserted")
-  
+  for(var i = 0; i<20; i++)
+  {
+    Materials.find().forEach(function(item)
+    {
+      Materials.update({_id: item._id}, 
+      {$push: 
+        {prices: {time: Date.now(), price : c * item.prices[item.prices.length-1].price 
+          + (1-c) * steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]}}})
+    })
+  }
+  // //future
+  // Materials.find().forEach(function(item)
+  // {
+  //     for(var t= Date.now(); t<1514691463000; t+=604800)
+  //     {
+  //         Materials.update({_id: item._id}, {$push: {prices: {time: + Date.now(), price : 4}}})
+  //   //    Materials.update({_id: item._id}, {$push: { prices : { time: t, price: t}}})
+  //     }
+  // })
+  // //****
+
   var count = 0;
   Meteor.setInterval(function ()
   {
-    if(count%1000===0 && count!=0)
+    if(count%2000===0 && count!=0)
     {
       Materials.find().forEach(function(item)
       {
@@ -218,5 +259,5 @@ Meteor.startup(() => {
         {prices: {time: Date.now(), price : c * item.prices[item.prices.length-1].price 
           + (1-c) * steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]}}})
     })
-  }, 10000)
+  }, 30000)
 });
