@@ -55,44 +55,67 @@ function getMaterial(materialName, minQuality, lat, lng, quantity, b) {
     return materialsUsed;
 }
 
-function getFuture(materialName, minQuality, lat, lng, quantity, b, start, deadline) {
+function getFuture (materialName, minQuality, lat, lng, quantity, b, start, deadline){
     var q = quantity;
     var updatedMaterials = [];
-    Materials.find({name: materialName, rating: {$gte: minQuality}})
-        .fetch().forEach(function (item) {
-        var supplyLoc = Suppliers.findOne({_id: item.supplierId}).location;
-        var dist = getDistanceFromLatLonInKm(supplyLoc[0], supplyLoc[1], lat, lng);
-        item.prices.forEach(function (priceObj) {
-            if (priceObj.time > start && priceObj.time < deadline) {
-                updatedMaterials.push({
-                    _id: item._id, updatedPrice: 0.01 * dist + priceObj.price,
-                    quantity: item.quantity, time: priceObj.time
-                });
-            }
-        })
+    ////
+    // Materials.find({name : materialName}).forEach(function(item)
+    // {
+    //     var trainingData= [];
+    //     for(var i = 0; i<50 ; i++)
+    //     {
+    //       var row = [new Date(steelPriceEndPoint.data.
+    //       data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][0]).getTime(),
+    //       steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]];
+    //       trainingData.push(row);
+    //     }
+    //     var result = regression('linearThroughOrigin', trainingData);
+    //     for(var t=start;t<deadline;t+=604800)
+    //     {
+    //       Materials.update({_id: item._id}, {$push: { prices : { time: t , price: result.equation[0]*t}}})
+    //     }
+    // })
+    ////
+    Materials.find({name : materialName, rating : {$gte : minQuality}})
+    .fetch().forEach(function(item)
+    {
+      var supplyLoc = Suppliers.findOne({_id: item.supplierId}).location;
+      var dist = getDistanceFromLatLonInKm(supplyLoc[0],supplyLoc[1],lat,lng);
+      item.prices.forEach(function(priceObj)
+      {
+        if(priceObj.time>start && priceObj.time<deadline)
+        {
+          updatedMaterials.push({_id: item._id, updatedPrice: 0.01 * dist + priceObj.price,
+          quantity: item.quantity, time: priceObj.time, priceHistory: item.prices});
+        }
+      })
     })
-    updatedMaterials.sort(function (a, b) {
-        return parseFloat(a.updatedPrice) - parseFloat(b.updatedPrice);
-    });
+    updatedMaterials.sort(function(a, b) {
+    return parseFloat(a.updatedPrice) - parseFloat(b.updatedPrice);
+  });
     var materialsUsed = [];
+    //console.log(updatedMaterials.length)
     for (let i = 0; i < updatedMaterials.length; i++) {
-        const item = updatedMaterials[i];
-        if (item.quantity <= q) {
-            b -= item.updatedPrice * item.quantity;
-            if (b < 0) return "insufficient budget!";
-            materialsUsed.push(updatedMaterials[i]);
-            q -= item.quantity;
-        }
-        else {
-            b -= item.updatedPrice * q;
-            if (b < 0) return "insufficient budget!";
-            materialsUsed.push(updatedMaterials[i]);
-            q = 0;
-            break;
-        }
+      const item = updatedMaterials[i];
+      if(item.quantity<=q)
+      {
+        b -= item.updatedPrice*item.quantity;
+        if(b<0) return "insufficient budget!";
+        materialsUsed.push(updatedMaterials[i]);
+        q -= item.quantity;
+      } 
+      else
+      {
+        b -= item.updatedPrice*q;
+        if(b<0) return "insufficient budget!";
+        materialsUsed.push(updatedMaterials[i]);
+        q=0;
+        break;
+      }
     }
+   
     return materialsUsed;
-}
+  }
 
 Meteor.methods({
     'materials.get'(materials, minQuality, lat, lng, quantity, budget){
@@ -107,20 +130,20 @@ Meteor.methods({
                 return supplier;
             });
         });
-        console.log(allMaterialsUsed)
         return allMaterialsUsed;
     },
     'supplier.get'(supplierId){
         return Suppliers.findOne({_id: supplierId});
     },
     'future.get'(materials, minQuality, lat, lng, quantity, budget, start, deadline){
-        var allMaterialsUsed = [];
-        var b = budget;
-        for (let i = 0; i < materials.length; i++) {
-            allMaterialsUsed.push(getFuture(materials[i], minQuality, lat, lng, quantity, b, start, deadline));
-        }
-        return allMaterialsUsed;
-    },
+      var allMaterialsUsed= [];
+      var b = budget;
+      for(let i=0;i<materials.length;i++)
+      {
+          allMaterialsUsed.push(getFuture(materials[i], minQuality, lat, lng, quantity, b, start, deadline));
+      }
+      return allMaterialsUsed;
+  },
     'model.materials'() {
         let rawModel = {};
 

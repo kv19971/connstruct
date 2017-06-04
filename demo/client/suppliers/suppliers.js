@@ -1,10 +1,11 @@
 /**
  * Created by kenta on 6/3/17.
  */
-import { Session } from 'meteor/session'
+import { Session } from 'meteor/session';
 let jsnx = require("jsnetworkx");
 Template.suppliers.viewmodel({
     onCreated() {
+        Session.setDefault({"materials": []});
         console.log("On suppliers page.");
     },
     onRendered() {
@@ -18,9 +19,13 @@ console.log(Session.get("quality"));
                 const materials = Object.keys(res);
                 const quantity = _.reduce(_.flatten(res), (val, acc) => val += acc, 0);
 
-                Meteor.call('materials.get', materials, parseFloat(Session.get("quality")), 39.768377, -86.158042,
+                console.log(materials)
+                console.log(quantity)
+
+                Meteor.call('materials.get', materials, parseFloat(Session.get("quality")) / 100.0, 39.768377, -86.158042,
                     quantity, parseFloat(Session.get("budget")), (err, res) => {
-                        
+
+                        Session.set("materials", materials);
                         
                         if (err) {
                             alert(err);
@@ -51,6 +56,7 @@ console.log(Session.get("quality"));
                                         color: col(supplier.rating),
                                         name: supplier.supplier.name
                                     }]);
+                                    console.log(supplier.supplier.name)
                                     edges.push([materials[materialIndex], supplier.supplier.name]);
                                 })
                                 materialIndex++;

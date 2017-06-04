@@ -7,6 +7,7 @@
   "dependencies": {
     "air-datepicker": "^2.2.3",
     "babel-runtime": "^6.23.0",
+    "chart.js": "^2.6.0",
     "d3": "^3.0.0",
     "jsnetworkx": "^0.3.4",
     "meteor-node-stubs": "~0.2.4",
