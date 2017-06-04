@@ -4,7 +4,10 @@
 import { Session } from 'meteor/session'
 import "air-datepicker"
 import "air-datepicker/dist/css/datepicker.css";
-
+Session.setDefault({
+    quality: "0",
+    budget: "9999999999"
+})
 $.fn.datepicker.language['en'] = {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
