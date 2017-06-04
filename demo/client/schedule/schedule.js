@@ -48,8 +48,8 @@ Template.schedule.viewmodel({
            max: 1000000000,
            grid: true
        });
-       $("#budget-input").change(function(){
-           Session.set("budget", $(this).text());
+       $("#budget-input").on('change', function(e){
+           Session.set("budget", parseFloat($(this).val()));
        });
    }
 });

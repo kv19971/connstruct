@@ -126,7 +126,7 @@ Meteor.methods({
 
         let header;
 
-        _.each(fs.readFileSync('C:/Users/Victor/Desktop/connstruct/demo/model.e2k').toString().split('\r\n'), line => {
+        _.each(fs.readFileSync('/home/kv19971/angel/connstruct/demo/model.e2k').toString().split('\r\n'), line => {
             if (line.startsWith("$ ")) {
                 header = line.replace("$ ", "");
             } else if (header) {

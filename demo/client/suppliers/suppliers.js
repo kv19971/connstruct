@@ -1,6 +1,7 @@
 /**
  * Created by kenta on 6/3/17.
  */
+import { Session } from 'meteor/session'
 let jsnx = require("jsnetworkx");
 Template.suppliers.viewmodel({
     onCreated() {
@@ -8,14 +9,19 @@ Template.suppliers.viewmodel({
     },
     onRendered() {
         let G = new jsnx.Graph();
-
+console.log(Session.get("quality"));
+                        console.log(Session.get("budget"));
         Meteor.call('model.materials', (err, res) => {
             if (!err) {
+                console.log(Session.get("quality"));
+                        console.log(Session.get("budget"));
                 const materials = Object.keys(res);
                 const quantity = _.reduce(_.flatten(res), (val, acc) => val += acc, 0);
 
-                Meteor.call('materials.get', materials, 0.001, 39.768377, -86.158042,
-                    quantity, 99999999999999, (err, res) => {
+                Meteor.call('materials.get', materials, parseFloat(Session.get("quality")), 39.768377, -86.158042,
+                    quantity, parseFloat(Session.get("budget")), (err, res) => {
+                        
+                        
                         if (err) {
                             alert(err);
                         } else {
