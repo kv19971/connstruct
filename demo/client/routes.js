@@ -20,3 +20,9 @@ FlowRouter.route('/suppliers', {
         BlazeLayout.render("app", {content: "suppliers"});
     }
 })
+
+FlowRouter.route('/forecast', {
+    action: function() {
+        BlazeLayout.render("app", {content: "forecast"});
+    }
+})

@@ -1,6 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import fs from 'fs';
 
+const c = 0.99;
+
+
 Meteor.startup(() => {
     Materials.remove({});
     Suppliers.remove({});
@@ -24,7 +27,7 @@ Meteor.startup(() => {
 
     let header;
 
-    _.each(fs.readFileSync('C:/Users/Victor/Desktop/connstruct/demo/model.e2k').toString().split('\r\n'), line => {
+    _.each(fs.readFileSync('/home/kv19971/angel/connstruct/demo/model.e2k').toString().split('\r\n'), line => {
         if (line.startsWith("$ ")) {
             header = line.replace("$ ", "");
         } else if (header) {
@@ -48,13 +51,17 @@ Meteor.startup(() => {
         }
     }));
 
+    //steelPriceEndPoint= HTTP.get('https://www.quandl.com/api/v1/datasets/LME/PR_FM.json');
     _.each(structures, element => {
         randSupplier = Suppliers.findOne({}, {skip: Math.random() * Suppliers.find().count()});
         var qly = Math.random();
         Materials.insert(
             {
                 name: element.material,
-                price: steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1],
+                prices: [{
+                    time: Date.now(),
+                    price: steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]
+                }],
                 quantity: Math.floor(Math.random() * 100000) + 5000,
                 rating: randSupplier.rating * qly,
                 quality: qly,
@@ -65,16 +72,27 @@ Meteor.startup(() => {
             })
     });
 
+    // console.log(Materials.find().count() + " materials inserted")
 
+    var count = 0;
     Meteor.setInterval(function () {
-        Materials.find().forEach(item => {
+        if (count % 1000 === 0 && count != 0) {
+            Materials.find().forEach(function (item) {
+                var prices = item.price;
+                prices.splice(0, 1);
+                Materials.update({_id: item._id}, {$set: {price: prices}})
+            })
+        }
+        Materials.find().forEach(function (item) {
             Materials.update({_id: item._id},
                 {
-                    $set: {
-                        price: c * item.price
-                        + (1 - c) * steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]
+                    $push: {
+                        prices: {
+                            time: Date.now(), price: c * item.prices[item.prices.length - 1].price
+                            + (1 - c) * steelPriceEndPoint.data.data[Math.floor(Math.random() * steelPriceEndPoint.data.data.length)][1]
+                        }
                     }
                 })
         })
-    }, 10000);
+    }, 10000)
 });

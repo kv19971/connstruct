@@ -153,7 +153,7 @@ Meteor.startup(() => {
   console.log("count s" + Suppliers.find().count());
 
   const lineReader = LineReader.createInterface({
-      input: fs.createReadStream('/home/tavish/Desktop/connstruct/tavish/simple-todos/model.e2k')
+      input: fs.createReadStream('C:/Users/Victor/Desktop/connstruct/demo/model.e2k')
   });
 
   supplierList= [ {name:'HAYN', rating: 0.45, location: [39.768377, -86.158042], materials: []}, 

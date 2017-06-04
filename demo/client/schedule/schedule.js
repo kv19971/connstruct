@@ -1,10 +1,13 @@
 /**
  * Created by kenta on 6/3/17.
  */
-
+import { Session } from 'meteor/session'
 import "air-datepicker"
 import "air-datepicker/dist/css/datepicker.css";
-
+Session.setDefault({
+    quality: "0",
+    budget: "9999999999"
+})
 $.fn.datepicker.language['en'] = {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -25,19 +28,31 @@ Template.schedule.viewmodel({
            range: true,
            multipleDatesSeparator: ' to ',
            clearButton: true,
-           minDate: new Date()
+           minDate: new Date(),
+           onSelect: function(dateText) { 
+                Session.set("deadline", dateText); 
+            }
        });
 
        $('#quality-slider').ionRangeSlider({
            min: 0,
            max: 100,
-           grid: true
+           grid: true,
+           onChange: function(data){
+               Session.set("quality", data.from);
+           },
+           onFinish: function(data){
+               Session.set("quality", data.from);
+           }
        });
 
        $('#budget-slider').ionRangeSlider({
            min: 10,
            max: 1000000000,
            grid: true
+       });
+       $("#budget-input").on('change', function(e){
+           Session.set("budget", parseFloat($(this).val()));
        });
    }
 });
